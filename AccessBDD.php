@@ -68,6 +68,8 @@ class AccessBDD {
                     return $this->selectAllCommandesDocument($id);
                 case "abonnement":
                     return $this->selectAllAbonnementsRevues($id);
+                case "utilisateur":
+                    return $this->selectUtilisateur($id);
                 default:
                     // cas d'un select portant sur une table simple			
                     $param = array(
@@ -260,6 +262,18 @@ class AccessBDD {
         $req .="where datediff(current_date(), a.dateFinAbonnement) < 30 ";
         $req .="order by a.dateFinAbonnement ASC; ";
         return $this->conn->query($req);
+    } 
+    
+    public function selectUtilisateur($id)
+    {
+        $param = array(
+                "id" => $id
+
+        );
+        $req = "select u.login, u.password , u.idService, s.libelle  ";
+        $req .= "from utilisateur u  join service s on s.id=u.idService ";
+        $req .= "where u.login =:id  ";     
+        return $this->conn->query($req, $param);
     } 
 
     
